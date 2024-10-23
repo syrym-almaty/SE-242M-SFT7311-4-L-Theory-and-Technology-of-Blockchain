@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<head>
+  <meta charset="UTF-8">
+  <title>ERC20 Token DApp</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+</head>
+<body>
+<h1>ERC20 Token DApp</h1>
+<p>Your Balance: <span id="balance">Loading...</span> MTK</p>
+<input type="text" id="recipient" placeholder="Recipient Address">
+<input type="number" id="amount" placeholder="Amount">
+<button onclick="transferTokens()">Transfer Tokens</button>
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+<script>
+  const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; // Replace with actual address
+  const abi = [
+    "function balanceOf(address owner) view returns (uint256)",
+    "function transfer(address to, uint256 amount) returns (bool)",
+    "event Transfer(address indexed from, address indexed to, uint256 value)"
+  ];
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  async function getBalance() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(contractAddress, abi, provider);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+    const balance = await contract.balanceOf(address);
+    document.getElementById("balance").innerText = ethers.utils.formatUnits(balance, 18);
+  }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+  async function transferTokens() {
+    const recipient = document.getElementById("recipient").value;
+    const amount = document.getElementById("amount").value;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, abi, signer);
+    const tx = await contract.transfer(recipient, ethers.utils.parseUnits(amount, 18));
+    await tx.wait();
+    getBalance();
+    alert("Transfer Successful!");
+  }
+
+  window.onload = () => {
+    if (typeof window.ethereum !== 'undefined') {
+      getBalance();
+    } else {
+      alert("Please install MetaMask!");
+    }
+  }
+</script>
+</body>
 </html>
