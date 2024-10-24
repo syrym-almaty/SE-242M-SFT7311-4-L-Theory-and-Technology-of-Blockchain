@@ -2,7 +2,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  const contractAddress = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; // Replace with actual address
+  const contractAddress = "0x1234567890abcdef1234567890abcdef12345678"; 
   const HelloWorld = await hre.ethers.getContractFactory("HelloWorld");
   const hello = await HelloWorld.attach(contractAddress);
 
