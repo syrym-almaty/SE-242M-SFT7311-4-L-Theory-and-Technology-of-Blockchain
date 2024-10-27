@@ -1,26 +1,13 @@
-<<<<<<< HEAD
-# SE-241M-SFT7311-6-Lab-Theory-and-Technology-of-Blockchain-Lab
+# Sample Hardhat Project
 
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
 
-# Blockchain Project Quickstart
+Try running some of the following tasks:
 
-This is a blockchain project built using **Node.js**, **React**, and **Solidity**. The project consists of a backend API, a front-end DApp, and a smart contract.
-
-## Project Structure
-- **backend/**: The Node.js API for interacting with the blockchain.
-- **frontend/**: The React.js app for the decentralized application.
-- **contracts/**: Solidity smart contracts.
-- **migrations/**: Truffle migrations for deploying contracts.
-- **test/**: Unit tests for the smart contracts.
-
-# MetaMask 
-
-## Getting Started
-
-### 1. Clone the repository
-```bash
-git clone <repo-url>
-cd blockchain-project
-=======
-# SE-242M-SFT7311-4-L-Theory-and-Technology-of-Blockchain
->>>>>>> 9b487c0df5aa4da2ff0157170849dd1a2d12d75d
+```shell
+npx hardhat help
+npx hardhat test
+REPORT_GAS=true npx hardhat test
+npx hardhat node
+npx hardhat ignition deploy ./ignition/modules/Lock.js
+```
